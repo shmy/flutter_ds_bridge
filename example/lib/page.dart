@@ -56,7 +56,7 @@ class _PageState extends State<Page> {
             child: DsBridgeWebView(
               onTextViewCreated: (controller) {
                 this.controller = controller;
-                this.controller.setUrl("https://baidu.com");
+                this.controller.setUrl("http://192.168.0.7:5000");
                 this.controller.addListener(() {
                   setState(() {});
                 });

@@ -81,7 +81,7 @@ public class DsBridgeWebView implements PlatformView, MethodChannel.MethodCallHa
         eventChannel.setStreamHandler(this);
         dWebView = new DWebView(registrar.context());
         dWebView.setWebContentsDebuggingEnabled(false);
-//        dWebView.addJavascriptObject(new JsApi(), "dd");
+        dWebView.addJavascriptObject(new JsApi(methodChannel), "flutter");
         dWebView.setWebChromeClient(webChromeClient);
         dWebView.setWebViewClient(webViewClient);
     }

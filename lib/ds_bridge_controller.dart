@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:convert';
 import 'package:ds_bridge/ds_bridge_defs.dart';
 import 'package:ds_bridge/ds_bridge_value.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,6 +21,18 @@ class DsBridgeController extends ValueNotifier<DsBridgeValue> {
         canGoBack: data["canGoBack"],
       );
     });
+    _methodChannel.setMethodCallHandler((MethodCall call) {
+      if (call.method == "callFlutter") {
+        Map<String, dynamic> body = json.decode(call.arguments);
+        if (body["type"] == "native_call") {
+          print(body["data"]["type"]);
+          print(body["data"]["data"]);
+        }
+        return Future.value("success");
+      }
+
+      return Future.value(null);
+    });
   }
 
   void setUrl(String url) {
@@ -40,5 +52,6 @@ class DsBridgeController extends ValueNotifier<DsBridgeValue> {
   }
   void dispose() {
     _streamSubscription?.cancel();
+    _methodChannel?.setMethodCallHandler(null);
   }
 }
