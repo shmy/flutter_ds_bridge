@@ -9,7 +9,7 @@ class DsBridgeController extends ValueNotifier<DsBridgeValue> {
   MethodChannel _methodChannel;
   EventChannel _eventChannel;
   StreamSubscription _streamSubscription;
-
+  Function onJSCall;
   DsBridgeController(int id) : super(DsBridgeValue()) {
     _methodChannel = new MethodChannel('$CHANNEL_NAME/method/$id');
     _eventChannel = new EventChannel('$CHANNEL_NAME/event/$id');
@@ -23,18 +23,24 @@ class DsBridgeController extends ValueNotifier<DsBridgeValue> {
     });
     _methodChannel.setMethodCallHandler((MethodCall call) {
       if (call.method == "callFlutter") {
-        Map<String, dynamic> body = json.decode(call.arguments);
-        if (body["type"] == "native_call") {
-          print(body["data"]["type"]);
-          print(body["data"]["data"]);
+        try {
+          Map<String, dynamic> body = json.decode(call.arguments);
+          if (onJSCall != null) {
+            return Future.value(onJSCall(body));
+          }
+          return Future.value(null);
+        } catch (e) {
+          return Future.value(e);
         }
-        return Future.value("success");
+
       }
 
       return Future.value(null);
     });
   }
-
+  void setOnJSCall(Function onJSCall) {
+    this.onJSCall = onJSCall;
+  }
   void setUrl(String url) {
     _methodChannel.invokeMethod("setUrl", url);
   }
