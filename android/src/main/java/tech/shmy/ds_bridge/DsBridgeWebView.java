@@ -1,9 +1,11 @@
 package tech.shmy.ds_bridge;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -73,6 +75,15 @@ public class DsBridgeWebView implements PlatformView, MethodChannel.MethodCallHa
 
     };
 
+    private DWebView.JavascriptCloseWindowListener javascriptCloseWindowListener = new DWebView.JavascriptCloseWindowListener() {
+        @Override
+        public boolean onClose() {
+            //如果返回false,则阻止DWebView默认处理.
+            return false;
+        }
+    };
+
+    @SuppressLint({"SetJavaScriptEnabled", "ClickableViewAccessibility"})
     DsBridgeWebView(Context context, PluginRegistry.Registrar registrar, Object args, int id) {
         this.context = context;
         methodChannel = new MethodChannel(registrar.messenger(), CHANNEL_NAME + "/method/" + id);
@@ -80,10 +91,31 @@ public class DsBridgeWebView implements PlatformView, MethodChannel.MethodCallHa
         methodChannel.setMethodCallHandler(this);
         eventChannel.setStreamHandler(this);
         dWebView = new DWebView(registrar.context());
-        dWebView.setWebContentsDebuggingEnabled(false);
+        DWebView.setWebContentsDebuggingEnabled(false);
+        dWebView.getSettings().setJavaScriptEnabled(true);
+        dWebView.getSettings().setSavePassword(true);
+        dWebView.getSettings().setSaveFormData(true);
+        dWebView.getSettings().setSupportZoom(true);
+        dWebView.setJavascriptCloseWindowListener(javascriptCloseWindowListener);
         dWebView.addJavascriptObject(new JsApi(methodChannel), "flutter");
         dWebView.setWebChromeClient(webChromeClient);
         dWebView.setWebViewClient(webViewClient);
+        dWebView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                System.out.println("123");
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                    case MotionEvent.ACTION_UP:
+                        if (!view.hasFocus()) {
+                            view.requestFocus();
+                        }
+                        break;
+                }
+
+                return false;
+            }
+        });
     }
 
     @Override

@@ -15,4 +15,5 @@ samples, guidance on mobile development, and a full API reference.
 
 ## todo
 * 实现 alert confirm 等等
+* platform 限制 软键盘无法正常弹出!
 
