@@ -27,6 +27,11 @@ class _DsBridgeWebViewState extends State<DsBridgeWebView> {
         viewType: CHANNEL_NAME,
         onPlatformViewCreated: _onPlatformViewCreated,
       );
+    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+      return UiKitView(
+        viewType: CHANNEL_NAME,
+        onPlatformViewCreated: _onPlatformViewCreated,
+      );
     }
     return Text(
         '$defaultTargetPlatform is not yet supported by the text_view plugin');

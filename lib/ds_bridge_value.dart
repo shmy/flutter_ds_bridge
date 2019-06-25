@@ -1,7 +1,7 @@
 class DsBridgeValue {
   final String title;
   final String url;
-  final int progress;
+  final double progress;
   final bool canGoBack;
 
   DsBridgeValue({
@@ -14,7 +14,7 @@ class DsBridgeValue {
   DsBridgeValue copyWith({
     String title,
     String url,
-    int progress,
+    double progress,
     bool canGoBack,
   }) {
     return DsBridgeValue(

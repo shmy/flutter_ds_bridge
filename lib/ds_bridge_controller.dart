@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ds_bridge/ds_bridge_defs.dart';
 import 'package:ds_bridge/ds_bridge_value.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 class DsBridgeController extends ValueNotifier<DsBridgeValue> {
@@ -14,10 +15,11 @@ class DsBridgeController extends ValueNotifier<DsBridgeValue> {
     _methodChannel = new MethodChannel('$CHANNEL_NAME/method/$id');
     _eventChannel = new EventChannel('$CHANNEL_NAME/event/$id');
     _streamSubscription = _eventChannel.receiveBroadcastStream().listen((data) {
+      var progress = (data["progress"]).toDouble();
       value = value.copyWith(
         title: data["title"],
         url: data["url"],
-        progress: data["progress"],
+        progress: progress,
         canGoBack: data["canGoBack"],
       );
     });

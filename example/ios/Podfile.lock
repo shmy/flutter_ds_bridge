@@ -1,0 +1,29 @@
+PODS:
+  - ds_bridge (0.0.1):
+    - dsBridge
+    - Flutter
+  - dsBridge (3.0.6)
+  - Flutter (1.0.0)
+
+DEPENDENCIES:
+  - ds_bridge (from `.symlinks/plugins/ds_bridge/ios`)
+  - Flutter (from `.symlinks/flutter/ios`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - dsBridge
+
+EXTERNAL SOURCES:
+  ds_bridge:
+    :path: ".symlinks/plugins/ds_bridge/ios"
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+
+SPEC CHECKSUMS:
+  ds_bridge: 49bb18bf1d19116b7f23dea7e7af00cb3b1a528d
+  dsBridge: 48b62ee8a411ad601a88d6f6c8cf6cb634b206b7
+  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+
+PODFILE CHECKSUM: ebd43b443038e611b86ede96e613bd6033c49497
+
+COCOAPODS: 1.7.2
